@@ -43,4 +43,4 @@ def NewPostRob(FaceBookID = "id@gmail.com",FaceBookPass = "xxxxxxxxxx",Content=[
     
     driver.close()
 
-NewPostRob("40241124+Fuck@gm.nfu.edu.tw","gavin840511",["hello","world"])
+NewPostRob("FacebookID@xxxxmail.com","password",["hello","world"])

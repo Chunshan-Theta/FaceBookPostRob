@@ -5,10 +5,22 @@ import time
 import datetime
 
 ChromeDriveDir ="/usr/lib/chromium-browser/chromedriver"
+WaitLoadTime = 2
 
 
-
-
+def Login(FaceBookID = "id@gmail.com",FaceBookPass = "xxxxxxxxxx",WaitLoadTime = 5):
+    #    go to mobile facebook
+    driver.get("https:/m.facebook.com")
+    time.sleep(WaitLoadTime)
+    #    enter email & password
+    elem = driver.find_element_by_name("email")
+    elem.clear()
+    elem.send_keys(FaceBookID)
+    elem = driver.find_element_by_name("pass")
+    elem.clear()
+    elem.send_keys(FaceBookPass)
+    elem.send_keys(Keys.RETURN)
+    time.sleep(WaitLoadTime)
 
 def NewPostRob(Content=["initial"],WaitLoadTime = 5):
 
@@ -23,7 +35,7 @@ def NewPostRob(Content=["initial"],WaitLoadTime = 5):
                 
                 ButtonTitle = i.get_attribute("value")
                 if ButtonTitle.encode('utf8') == "發佈":
-                    i.click()
+                    i.submit()
             except:
                 pass
     
@@ -45,9 +57,8 @@ def SelectPost(Tcontent):
 
 # Open Web browser
 driver = webdriver.Chrome(ChromeDriveDir)
-#    go to mobile facebook
-driver.get("https:/m.facebook.com")
-
+Login('40241124+fuck@gm.nfu.edu.tw','gavin840511')
+'''
 print 'login to facebook in 30 sec.'
 time.sleep(10)
 print 'login to facebook in 20 sec.'
@@ -62,16 +73,50 @@ print '2'
 time.sleep(1)
 print '1'
 time.sleep(1)
+'''
 print 'going on'
 
 driver.get("https://m.facebook.com/profile.php?")
-
+time.sleep(WaitLoadTime)
 driver.execute_script("window.scrollTo(100, document.body.scrollHeight);")
 
 #NewPostRob(["hello","world"])
 Today_Post_url = SelectPost("element.style")
 print Today_Post_url
 
+
+
+
 driver.get(Today_Post_url)
+time.sleep(WaitLoadTime)
+reply_container = driver.find_elements_by_class_name('_2b04')
+for c in reply_container:
+    reply_text = c.find_elements_by_class_name('_2b06')
+    reply_text = c.find_element_by_tag_name('div')
+    reply_button = c.find_element_by_partial_link_text('回覆')
+    try:
+        print reply_text.text.split('\n')
+        reply_button.click()
+        time.sleep(WaitLoadTime)
+        reply_textBox = c.find_element_by_class_name('mentions-input')
+        reply_textBox.send_keys('reply')
+        time.sleep(WaitLoadTime)
+        reply_submit = c.find_elements_by_css_selector("button._54k8")
+        for i in reply_submit:
+            try:                
+                ButtonTitletype = i.get_attribute("type")
+                
+                if ButtonTitletype == 'submit':
+                    i.click()
+                    print i.get_attribute("value")
+            except:
+                print 'error'
+    except Exception as e:
+        print e
+
+
+
+
+print 'end'
 time.sleep(60)
 driver.close()
